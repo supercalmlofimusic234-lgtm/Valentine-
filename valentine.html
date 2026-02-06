@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Will You Be My Valentine? ❤️</title>
+
+<style>
+
+/* ❤️ CINEMATIC PINK BACKGROUND */
+body{
+margin:0;
+overflow:hidden;
+font-family:sans-serif;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+text-align:center;
+
+background:linear-gradient(270deg,#ff9ecb,#ffc2e2,#ffd6ec,#ff9ecb);
+background-size:600% 600%;
+animation:romanticFlow 12s ease infinite;
+transition:transform 2s ease;
+}
+
+@keyframes romanticFlow{
+0%{background-position:0% 50%}
+50%{background-position:100% 50%}
+100%{background-position:0% 50%}
+}
+
+/* 🎬 CINEMATIC ZOOM */
+.zoomMoment{
+animation:cinematicZoom 2.5s ease forwards;
+}
+
+@keyframes cinematicZoom{
+0%{transform:scale(1);}
+100%{transform:scale(1.12);}
+}
+
+/* 🎬 INTRO SCREEN */
+#intro{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#000;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:24px;
+z-index:999;
+animation:fadeOut 2s forwards;
+animation-delay:2s;
+}
+
+@keyframes fadeOut{
+to{opacity:0;pointer-events:none;}
+}
+
+/* ❤️ FLOATING HEARTS */
+.float{
+position:absolute;
+animation:floatUp linear infinite;
+pointer-events:none;
+font-size:22px;
+}
+
+@keyframes floatUp{
+0%{transform:translateY(100vh) scale(.6);opacity:0}
+100%{transform:translateY(-10vh) scale(1);opacity:1}
+}
+
+/* 📱 MOBILE FIRST */
+.container{
+position:relative;
+z-index:2;
+width:90%;
+max-width:420px;
+margin:auto;
+}
+
+h1{
+font-size:28px;
+line-height:1.3;
+padding:0 10px;
+transition:0.3s;
+}
+
+button{
+border:none;
+border-radius:14px;
+padding:16px 24px;
+font-size:18px;
+margin-top:10px;
+width:100%;
+max-width:260px;
+cursor:pointer;
+transition:0.25s;
+}
+
+#yesBtn{
+background:#ff4d8d;
+color:white;
+box-shadow:0 0 30px rgba(255,77,141,.4);
+}
+
+#noBtn{
+background:#eee;
+}
+
+/* 💥 HEART EXPLOSION */
+.heart{
+position:absolute;
+font-size:26px;
+animation:explode 1s forwards;
+pointer-events:none;
+}
+
+@keyframes explode{
+0%{transform:scale(1);opacity:1}
+100%{transform:translate(var(--x),var(--y)) scale(0);opacity:0}
+}
+
+/* 📸 GALLERY */
+#gallery{
+display:none;
+margin-top:20px;
+animation:fadeIn 1s forwards;
+}
+
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(20px)}
+to{opacity:1;transform:translateY(0)}
+}
+
+.photo{
+width:100%;
+max-width:260px;
+aspect-ratio:1/1;
+margin:8px auto;
+display:block;
+border-radius:16px;
+object-fit:cover;
+box-shadow:0 10px 25px rgba(0,0,0,.15);
+}
+
+/* 🌼 DECOR IMAGES */
+.decor{
+position:absolute;
+width:90px;
+pointer-events:none;
+}
+
+.sunflower{top:20px;left:20px;}
+.lily{bottom:20px;right:20px;}
+
+@media (min-width:700px){
+h1{font-size:38px;}
+.decor{width:130px;}
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="intro">Checking destiny... ❤️✨</div>
+
+<!-- 🎶 TITLE MUSIC -->
+<audio id="titleMusic" loop>
+<source src="bemybaby1.mp3" type="audio/mpeg">
+</audio>
+
+<!-- ❤️ YES MUSIC -->
+<audio id="yesMusic" loop>
+<source src="nothing1.mp3" type="audio/mpeg">
+</audio> 
+
+<!-- 🌼 YOUR FLOWER GIF SPOTS -->
+<img class="decor sunflower" src="sunflower.gif">
+<img class="decor lily" src="lily.gif">
+
+<div class="container">
+
+<h1 id="question">Kashu! My baby
+  Will you be my Valentine? ❤️</h1>
+
+<div>
+<button id="yesBtn">YES 💖</button>
+<button id="noBtn">No 🙈</button>
+</div>
+
+<div id="gallery">
+<h2>You said YES 😭❤️✨</h2>
+
+<img class="photo" src="photo1.jpg">
+<img class="photo" src="photo2.jpg">
+<img class="photo" src="photo3.jpg">
+
+</div>
+
+</div>
+
+<script>
+
+const yesBtn=document.getElementById("yesBtn");
+const noBtn=document.getElementById("noBtn");
+const question=document.getElementById("question");
+const gallery=document.getElementById("gallery");
+
+const titleMusic=document.getElementById("titleMusic");
+const yesMusic=document.getElementById("yesMusic");
+
+let noCount=0;
+
+const texts=[
+"Are you sure? 🥺",
+"Sochlo ❤️",
+"Dekhlo 👀",
+"Please?? 😭",
+"It is gonna be worth it😌",
+"There is no escape 😈"
+];
+
+/* 🎶 START TITLE MUSIC AFTER FIRST TAP */
+function startTitleMusic(){
+titleMusic.volume=1;
+titleMusic.play().catch(()=>{});
+}
+document.addEventListener("touchstart",startTitleMusic,{once:true});
+document.addEventListener("click",startTitleMusic,{once:true});
+
+/* ❤️ FLOATING RED HEARTS */
+const emojis=["❤️","💋","💕","💖","💘","❣️"];
+
+function spawnEmoji(){
+const e=document.createElement("div");
+e.className="float";
+e.innerText=emojis[Math.floor(Math.random()*emojis.length)];
+e.style.left=Math.random()*100+"vw";
+e.style.animationDuration=(5+Math.random()*4)+"s";
+document.body.appendChild(e);
+setTimeout(()=>e.remove(),9000);
+}
+setInterval(spawnEmoji,600);
+
+/* 😈 NO BUTTON CHAOS */
+function moveNoButton(){
+noBtn.style.position="absolute";
+noBtn.style.left=Math.random()*70+"%";
+noBtn.style.top=Math.random()*70+"%";
+}
+
+noBtn.addEventListener("click",()=>{
+noCount++;
+
+yesBtn.style.transform=`scale(${1+noCount*0.3})`;
+yesBtn.style.boxShadow=`0 0 ${30+noCount*15}px rgba(255,77,141,0.8)`;
+noBtn.style.transform=`scale(${1-noCount*0.1})`;
+
+question.innerText=texts[Math.min(noCount-1,texts.length-1)];
+
+moveNoButton();
+});
+
+/* 💥 HEART EXPLOSION */
+function heartExplosion(){
+for(let i=0;i<25;i++){
+const h=document.createElement("div");
+h.className="heart";
+h.innerText="❤️";
+h.style.left="50%";
+h.style.top="50%";
+h.style.setProperty("--x",(Math.random()*400-200)+"px");
+h.style.setProperty("--y",(Math.random()*400-200)+"px");
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),1000);
+}
+}
+
+/* ❤️ YES CLICK */
+yesBtn.addEventListener("click",()=>{
+
+document.body.classList.add("zoomMoment");
+
+/* 🎶 SWITCH MUSIC */
+titleMusic.pause();
+titleMusic.currentTime=0;
+
+yesMusic.volume=1;
+yesMusic.play().catch(()=>{});
+
+heartExplosion();
+
+question.innerText="DESTINY ACCEPTED 😭❤️✨";
+
+gallery.style.display="block";
+yesBtn.style.display="none";
+noBtn.style.display="none";
+
+sendYesNotification();
+
+});
+
+/* 🔔 WEBHOOK */
+function sendYesNotification(){
+
+fetch("YOUR_WEBHOOK_URL_HERE",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+message:"SHE SAID YES 😭❤️✨"
+})
+}).catch(()=>{});
+
+}
+
+</script>
+
+</body>
+</html>
